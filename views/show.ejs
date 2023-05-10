@@ -1,0 +1,37 @@
+<%- include('./partials/header.ejs') %>
+<link rel="stylesheet" href="/style.css">
+
+<div class="job-details">
+    <h1>Show Page For <%= job.name %></h1>
+    <div class="job-info">
+        <div class="job-address"><%= job.address %></div>
+        <div class="job-image">
+            <img class="img-fluid" src="<%= job.image %>" alt="">
+        </div>
+        <div class="job-type"><%= job.type %></div>
+        <div class="job-cgpa"><%= job.cgpa %></div>
+        <div class="job-deadline"><%= job.deadline.toDateString() %></div>
+        <div class="job-created-at"><%= moment(job.createdAt).fromNow() %></div>
+        <div class="job-package"><%= job.package %></div>
+        <a href="/jobs/<%= job._id %>/apply" class="btn btn-info">Apply</a>
+        <% if (currentUser && currentUser.isAdmin) { %>
+        <a class="btn btn-warning" href="/jobs/<%= job._id %>/edit">Edit</a>
+        <form action="/jobs/<%= job._id %>?_method=DELETE" method="post">
+            <input class="btn btn-danger" type="submit" value="Delete">
+        </form>
+        <% } %>
+    </div>
+
+    <% if (currentUser && currentUser.isAdmin) { %>
+    <div class="applied-students">
+        <h5>List of students that have applied</h5>
+        <% for( let student of job.appliedUsers) { %>
+        <div><%= student.username %></div>
+        <% } %>
+    </div>
+    <% } %>
+</div>
+
+<%- include('./partials/footer.ejs') %>
+
+
